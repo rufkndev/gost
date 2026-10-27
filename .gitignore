@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.env
+# Корпус содержит реальные работы студентов с ПДн — хранится вне репозитория (spec, раздел 11).
+tests/corpus/

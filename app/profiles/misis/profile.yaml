@@ -1,0 +1,192 @@
+# Профиль: НИТУ МИСИС. Методичка кафедры бизнес-информатики и систем управления производством (БИСУП).
+# Источник: docs/source/гостВУЗ.docx «Оформление документов по ГОСТ».
+# Где методичка молчит, значения взяты из ГОСТ 7.32-2017 (методичка прямо на него ссылается).
+#
+# Метки источника:
+#   [ВУЗ: раздел] — прямо из методички;
+#   [ГОСТ п.]     — методичка молчит, взято из ГОСТ 7.32-2017;
+#   [SPEC]        — из docs/source/spec.md;
+#   [?]           — допущение, ждёт подтверждения владельца (см. docs/GUIDE.md, раздел о профилях).
+
+id: misis
+title: "НИТУ МИСИС"               # решение владельца (этап 0, вопрос 1)
+schema_version: 1
+
+page:
+  size: A4                                                  # [ГОСТ 6.1.1]
+  margins_mm: {left: 30, right: 15, top: 20, bottom: 20}    # [ВУЗ: Основная информация]
+  landscape_margins_mm: {left: 20, right: 20, top: 30, bottom: 15}  # [ВУЗ: Основная информация]
+  numbering:
+    position: bottom_center      # [ВУЗ: Нумерация]
+    trailing_dot: false          # [ВУЗ: Нумерация]
+    start_from: 1                # [ВУЗ: Нумерация]
+    show_on_title: false         # [ВУЗ: Нумерация]
+    font_pt: 12                  # [ВУЗ: Нумерация]
+  hyphenation: false             # [ГОСТ 6.2.4, 6.5.8]
+
+body:
+  font: "Times New Roman"        # [ВУЗ: Основная информация]
+  size_pt: 12                    # [ВУЗ: Основной текст]
+  color: "000000"                # [ГОСТ 6.1.1]
+  line_spacing: 1.5              # [ВУЗ: Основной текст]
+  first_line_indent_cm: 1.25     # [ВУЗ: Основной текст]
+  align: justify                 # [?] методичка не указывает; так же выровнены заголовки разделов
+  space_before_pt: 0             # [SPEC]
+  space_after_pt: 0              # [SPEC]
+  widow_control: true            # [SPEC]
+
+headings:
+  structural_names:              # [ВУЗ: Заголовки] + [ГОСТ 6.2.1]
+    - "СПИСОК ИСПОЛНИТЕЛЕЙ"
+    - "РЕФЕРАТ"
+    - "СОДЕРЖАНИЕ"
+    - "ТЕРМИНЫ И ОПРЕДЕЛЕНИЯ"
+    - "ПЕРЕЧЕНЬ СОКРАЩЕНИЙ И ОБОЗНАЧЕНИЙ"
+    - "ВВЕДЕНИЕ"
+    - "ЗАКЛЮЧЕНИЕ"
+    - "СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ"
+  structural:
+    case: upper                  # [ВУЗ: Заголовки структурных элементов]
+    align: center                # [ВУЗ]
+    bold: true                   # [ВУЗ]
+    underline: false             # [ГОСТ 6.2.1]
+    indent: false                # [ВУЗ]
+    new_page: true               # [ВУЗ: Основная информация] + [ГОСТ 6.2.1]
+    trailing_dot: false          # [ВУЗ]
+    size_pt: 12                  # [ВУЗ]
+    line_spacing: 1.5            # [ВУЗ]
+    space_before_pt: 0
+    space_after_pt: 24           # решение владельца (вопрос 6): как у разделов
+  level1:
+    case: as_is
+    align: justify               # [ВУЗ: Заголовки разделов и подразделов] «по ширине»
+    bold: true                   # [ВУЗ]
+    underline: false             # [ГОСТ 6.2.3]
+    indent: true                 # [ВУЗ] абзацный отступ 1,25
+    new_page: true               # [ВУЗ: Основная информация] каждый раздел с новой страницы
+    trailing_dot: false          # [ГОСТ 6.2.3]
+    numbering: "{n}"             # [ВУЗ] нумеруются без точки
+    size_pt: 12                  # [ВУЗ]
+    line_spacing: 1.5            # [ВУЗ]
+    space_before_pt: 0           # начало страницы
+    space_after_pt: 24           # [ВУЗ]
+  level2:
+    case: as_is
+    align: justify               # [ВУЗ]
+    bold: true                   # [ВУЗ]
+    underline: false
+    indent: true                 # [ВУЗ]
+    new_page: false
+    trailing_dot: false
+    numbering: "{n}.{m}"         # [ВУЗ] без точки
+    size_pt: 12                  # [ВУЗ]
+    line_spacing: 1.5            # [ВУЗ]
+    space_before_pt: 24          # [ВУЗ] подзаголовок внутри текста — 24 пт сверху и снизу
+    space_after_pt: 24           # [ВУЗ]
+  level3:                        # [?] методичка уровни не различает — как level2
+    case: as_is
+    align: justify
+    bold: true
+    underline: false
+    indent: true
+    new_page: false
+    trailing_dot: false
+    numbering: "{n}.{m}.{k}"
+    size_pt: 12
+    line_spacing: 1.5
+    space_before_pt: 24
+    space_after_pt: 24
+  # [ВУЗ] «Подзаголовок сразу после основного заголовка — между ними нет отступа,
+  # интервал ставится только после подзаголовка».
+  consecutive_headings: {space_between_pt: 0}
+  keep_with_next: true           # [SPEC]
+
+figures:
+  align: center                  # [ВУЗ: Рисунок] без абзацного отступа
+  indent: false                  # [ВУЗ]
+  blank_lines_around: false      # [ВУЗ] пустые строки до и после рисунка не пропускаются
+  caption:
+    position: below              # [ГОСТ 6.5.7]
+    align: center                # [ВУЗ]
+    indent: false                # [ВУЗ]
+    template: "Рисунок {num} – {title}"   # [ВУЗ] короткое тире «–»
+    part_suffix: " ({part})"     # [ВУЗ] рисунок на двух страницах: «… (1)»; распознаём, не меняем
+    trailing_dot: false          # [ГОСТ 6.5.7]
+    line_spacing: 1.5            # решение владельца (вопрос 7): как у подписи таблицы; ГОСТ 6.5.8 даёт 1,0
+    numbering: continuous        # [ВУЗ] сквозная
+    appendix_number: "{letter}.{n}"  # [ГОСТ 6.5.5]
+
+tables:
+  caption:
+    position: above              # [ГОСТ 6.6.3]
+    align: left                  # [ГОСТ 6.6.3]
+    indent: false                # [ВУЗ: Таблица]
+    template: "Таблица {num} – {title}"   # [ВУЗ]
+    trailing_dot: false          # [ГОСТ 6.6.3]
+    size_pt: 12                  # [ВУЗ]
+    line_spacing: 1.5            # [ВУЗ] (расходится с ГОСТ 6.6.3 — там 1,0)
+    numbering: continuous        # [ВУЗ]
+    appendix_number: "{letter}.{n}"  # [ВУЗ: Приложения] Таблица А.1
+  text:
+    size_pt: 10                  # [ВУЗ] для больших таблиц допустимо 9 пт
+    size_pt_min: 9               # [ВУЗ] линтер не ругается на 9 пт
+    line_spacing: 1.0            # [ВУЗ]
+    first_line_indent_cm: 0      # [?]
+  header_row:
+    align: center                # [ВУЗ] шапка по центру
+    bold: true                   # [ВУЗ] полужирная
+  width: autofit_window          # [ВУЗ] «Автоподбор по ширине окна»
+  continuation_label: "Продолжение таблицы {num}"  # [ВУЗ]
+  column_numbers_row: check      # [ВУЗ] у каждой таблицы (вопрос 8); строку не добавляем — предупреждение в отчёте
+  space_after_table_pt: 6        # [ВУЗ] у текста после таблицы отступ сверху 6 пт
+
+notes:
+  indent: true                   # [ГОСТ 6.7.2]
+  single_template: "Примечание — {text}"  # [ГОСТ 6.7.3] только проверка
+
+formulas:
+  align: center                  # [ВУЗ: Формулы]
+  number:
+    position: right              # [ВУЗ]
+    template: "({num})"          # [ВУЗ]
+    numbering: continuous        # [ГОСТ 6.8.3]
+    appendix_number: "{letter}.{n}"  # [ГОСТ 6.8.5]
+  blank_line_around: true        # [ГОСТ 6.8.1] методичка молчит
+  where_without_colon: check     # [ВУЗ] «где» без двоеточия — только проверка
+
+lists:
+  layout: hanging                # [ВУЗ: Списки] маркер без абзацного отступа, текст на 1,25 см
+  marker_indent_cm: 0            # [ВУЗ]
+  text_indent_cm: 1.25           # [ВУЗ]
+  bullet_char: "–"               # [ГОСТ 6.4.6]; методичка требует лишь единый маркер
+  ordered_template: "{n})"       # [ВУЗ] после числа скобка
+  lettered_template: "{a})"      # [ВУЗ] строчные буквы со скобкой
+  letters: "абвгдежиклмнпрстуфхцшщэюя"  # [ГОСТ 6.4.6]
+  uniform: true                  # [ВУЗ] все списки одного стиля
+
+bibliography:                    # методичка молчит — [ГОСТ 6.16]
+  heading: "СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ"  # [ВУЗ: Заголовки]
+  numbering: "{n}."
+  indent: true
+  reformat_entries: false        # [SPEC]
+
+appendix:
+  heading_template: "ПРИЛОЖЕНИЕ {letter}"  # [ВУЗ: Приложения]
+  letters: "АБВГДЕЖИКЛМНПРСТУФХЦШЩЭЮЯ"     # [ВУЗ]
+  new_page: true                 # [ВУЗ]
+  label: {align: center, bold: true, case: upper, size_pt: 12}        # [ВУЗ] + [ВУЗ: Заголовки структурных элементов]
+  title: {align: center, bold: true, case: as_is, trailing_dot: false}  # [ВУЗ]
+
+toc:                             # методичка молчит — [ГОСТ 6.13]
+  generate: auto                 # решение владельца (вопрос 5): было в исходнике ИЛИ > 10 стр. и ≥ 2 заголовков
+  title: "СОДЕРЖАНИЕ"
+  levels: 3                      # [SPEC]
+  entry_align: left
+  dot_leader: true
+  optional_below_pages: 10       # [ГОСТ 5.4.3]
+
+checks:                          # только предупреждения линтера, на выдачу не влияют
+  figures_tables_referenced: true        # [ВУЗ: Основная информация]
+  appendices_referenced: true            # [ГОСТ 6.17.2]
+  section_ends_with_table_or_figure: true  # [ВУЗ] раздел нельзя заканчивать таблицей или рисунком
+  max_blank_page_fraction: 0.25          # [ВУЗ] не более 25 % пустого места; [?] нужен рендер, не на MVP

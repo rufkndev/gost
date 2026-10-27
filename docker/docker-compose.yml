@@ -1,0 +1,80 @@
+# Запуск из корня проекта: `docker compose up -d --build`
+# (в корневом .env указано COMPOSE_FILE=docker/docker-compose.yml).
+# Пути в этом файле — относительно папки docker/.
+name: gost-bot
+
+x-app-env: &app-env
+  env_file:
+    - path: ../.env
+      required: false
+  environment:
+    DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-gost}:${POSTGRES_PASSWORD:-gost}@postgres:5432/${POSTGRES_DB:-gost}
+    REDIS_URL: redis://redis:6379/0
+    STORAGE_DIR: /data/files
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gost}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-gost}
+      POSTGRES_DB: ${POSTGRES_DB:-gost}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]  # FSM бота переживает рестарт
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Разовый сервис: применяет миграции БД и завершается. bot и worker ждут его успеха.
+  migrate:
+    build: {context: .., dockerfile: docker/Dockerfile.app}
+    image: gost-bot-app
+    <<: *app-env
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+    depends_on:
+      postgres: {condition: service_healthy}
+
+  bot:
+    image: gost-bot-app
+    restart: unless-stopped
+    <<: *app-env
+    command: ["python", "-m", "app.bot.main"]
+    volumes:
+      - files:/data/files
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+
+  worker:
+    build: {context: .., dockerfile: docker/Dockerfile.worker}
+    image: gost-bot-worker
+    restart: unless-stopped
+    <<: *app-env
+    command: ["arq", "app.workers.settings.WorkerSettings"]
+    volumes:
+      - files:/data/files
+    mem_limit: 2g
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+
+volumes:
+  pgdata:
+  redisdata:
+  files:

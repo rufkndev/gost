@@ -1,0 +1,14 @@
+# Исключения из контекста сборки (BuildKit читает <Dockerfile>.dockerignore рядом с Dockerfile;
+# контекст сборки — корень проекта).
+.git
+.venv
+.env
+**/__pycache__
+.mypy_cache
+.ruff_cache
+.pytest_cache
+tests
+docs
+!docs/legal
+docs/legal/ready
+out

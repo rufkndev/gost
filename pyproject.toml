@@ -1,0 +1,78 @@
+[project]
+name = "gost-bot"
+version = "0.1.0"
+description = "Telegram-бот оформления документов Word по ГОСТ 7.32-2017 и профилям вузов"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "aiogram>=3.13,<4",
+    "alembic>=1.13",
+    "arq>=0.26",
+    "asyncpg>=0.29",
+    "cryptography>=43",
+    "httpx>=0.27",
+    "lxml>=5.3",
+    "openai>=2",
+    "pydantic>=2.9",
+    "pydantic-settings>=2.7",
+    "pypdf>=5.0",
+    "python-docx>=1.1",
+    "pyyaml>=6.0",
+    "redis>=5.0",
+    "sqlalchemy[asyncio]>=2.0.36",
+]
+
+[project.optional-dependencies]
+sentry = ["sentry-sdk>=2.18"]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.13",
+    "pytest>=8.3",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+    "types-pyyaml>=6.0",
+    "lxml-stubs>=0.5",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["app/db/migrations/versions", "*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "ASYNC", "S"]
+ignore = [
+    "RUF001", "RUF002", "RUF003",  # кириллица и типографские тире — норма для этого проекта
+    "SIM102",  # вложенные условия здесь читаются лучше
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]
+"tests/synth.py" = ["E501"]  # встроенный XML
+"app/core/template.py" = ["E501"]  # встроенный XML
+"app/bot/texts.py" = ["E501"]  # тексты для людей, не режем ради длины строки
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+exclude = ["app/db/migrations/versions/"]
+
+[[tool.mypy.overrides]]
+module = ["docx.*", "arq.*", "sentry_sdk.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+markers = [
+    "integration: требует PostgreSQL и Redis (TEST_DATABASE_URL, TEST_REDIS_URL)",
+]
